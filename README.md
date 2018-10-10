@@ -1,5 +1,6 @@
-# acme_build, add nginx config
-# zabbix_agent + ztc install
+# acme_build
+# zabbix_agent + ztc
+
 acme  собирает из исходников acme-client 
 добавляет в системе каталоги поумолчанию для программы
 добавляет в nginx настройка для челенжа с letscrypt . 

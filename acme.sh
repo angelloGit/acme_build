@@ -1,4 +1,4 @@
-!/bin/sh
+#!/bin/sh
 
 apt install g++ git automake libbsd-dev autogen libtool make pkg-config
 

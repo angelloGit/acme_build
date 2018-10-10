@@ -20,6 +20,8 @@ Include=/etc/zabbix/zabbix_agentd.conf.d/*.conf
 Include=/etc/zabbix-agent.d/*.conf
 __EOF
 
+
+
 [ -d /var/run/zabbix ] || mkdir -p /var/run/zabbix && chown zabbix /var/run/zabbix
 [ -d /var/log/zabbix ] || mkdir -p /var/log/zabbix && chown zabbix /var/run/zabbix
 
@@ -49,7 +51,7 @@ UserParameter=php.fpm.ping,/usr/bin/curl -w %{time_total} --no-keepalive -o /dev
 UserParameter=php.fpm.status[*],/usr/bin/curl --no-keepalive -sm3 http://127.0.0.1:8081/status | grep -e "^`echo $1 | tr _ \" \"`" | cut -d ':' -f 2 | tr -d ' '
 __EOFF
 
-cat /etc/nginx/sites-enabled/zabbix_mon.conf <<__EOFF
+cat >> /etc/nginx/sites-enabled/zabbix_mon.conf <<__EOFF
 server {
         listen 127.0.0.1:8081;
         server_name _ ;
@@ -89,4 +91,6 @@ __EOFF
 
 fi
 
+
+service zabbix-agent restart
 

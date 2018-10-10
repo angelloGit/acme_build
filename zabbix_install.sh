@@ -23,7 +23,7 @@ __EOF
 
 
 [ -d /var/run/zabbix ] || mkdir -p /var/run/zabbix && chown zabbix /var/run/zabbix
-[ -d /var/log/zabbix ] || mkdir -p /var/log/zabbix && chown zabbix /var/run/zabbix
+[ -d /var/log/zabbix ] || mkdir -p /var/log/zabbix && chown zabbix /var/log/zabbix
 
 cd /opt
 

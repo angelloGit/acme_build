@@ -1,6 +1,6 @@
 #!/bin/sh
 
-apt install zabbix-agent python sudo lm-sensors
+apt install zabbix-agent python sudo lm-sensors pwgen python-mysqldb
 apt install --no-install-recommends smartmontools
 
 mv /etc/zabbix/zabbix_agentd.conf /etc/zabbix/zabbix_agentd.conf~
@@ -55,25 +55,38 @@ server {
         server_name _ ;
         location /server-status {
                 stub_status on;
-#                access_log   on;
-#                allow 127.0.0.1;
-#                deny all;
-<------>}
-<------>location /status {
-<------>    add_header FPM_Time $upstream_response_time;
-#<----->    access_log on; allow 127.0.0.1; deny all;
-<------>    fastcgi_pass php;
-<------>    include /etc/nginx/fastcgi_params;
-<------>    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-<------>}
-<------>location /ping {
-#<----->    access_log on; allow 127.0.0.1; deny all;
-<------>    fastcgi_pass php;
-<------>    include /etc/nginx/fastcgi_params;
-<------>    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-#<----->    sub_filter '$' $upstream_response_time;
-<------>....
-<------>}
+        }
+        location /status {
+            add_header FPM_Time $upstream_response_time;
+            fastcgi_pass php;
+            include /etc/nginx/fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        }
+        location /ping {
+            fastcgi_pass php;
+            include /etc/nginx/fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+
+        }
 
 }
 __EOFF
+
+if [ -x /usr/bin/mysql ]
+then
+    p=`pwgen -ancs 20 1`
+    mysql <<_EOFF
+create database ztest;
+grant all on ztest.* to ztest@'localhost' identified by '$p';
+_EOFF
+    cat > /etc/ztc/mysql.conf <<__EOFF
+[main]
+user=ztest
+password=$p
+database=ztest
+host=localhost
+__EOFF
+
+fi
+
+

@@ -59,15 +59,15 @@ server {
                 stub_status on;
         }
         location /status {
-            add_header FPM_Time $upstream_response_time;
+            add_header FPM_Time \$upstream_response_time;
             fastcgi_pass php;
             include /etc/nginx/fastcgi_params;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
         }
         location /ping {
             fastcgi_pass php;
             include /etc/nginx/fastcgi_params;
-            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_param SCRIPT_FILENAME \$document_root\$fastcgi_script_name;
 
         }
 
